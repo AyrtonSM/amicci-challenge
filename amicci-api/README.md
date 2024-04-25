@@ -27,3 +27,10 @@ Then apply your password
 
 Run the server: <br>
 `$ python manage.py runserver` <br>
+
+## Docker
+Run docker compose <br>
+`$ docker compose -f compose.api.yaml up -d` <br>
+
+Access api via: <br>
+`$ http://127.0.0.1:8000/` <br>
