@@ -1,0 +1,5 @@
+services:
+  web:
+    build: /amicci-frontend/
+    ports:
+      - '8001:8001'

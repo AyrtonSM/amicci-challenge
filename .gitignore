@@ -1,4 +1,5 @@
 .idea/*
 amicci-api/.idea/*
+amicci-api/amicci/__pycache__
 amicci-api/amicci-env/*
 amicci-frontend/.idea/*
