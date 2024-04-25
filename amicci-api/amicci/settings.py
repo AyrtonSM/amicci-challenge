@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'amicci'
+
 ]
 
 MIDDLEWARE = [
@@ -81,6 +83,9 @@ DATABASES = {
     }
 }
 
+MIGRATION_MODULES = {
+    'amicci': 'amicci.api.migrations',  # Example: 'myapp' app will use 'myapp_migrations' directory
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -105,8 +110,15 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
     ]
 }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
