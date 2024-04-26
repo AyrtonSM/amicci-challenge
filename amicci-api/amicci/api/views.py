@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions, viewsets
 from .models import *
-from .serializers import CategorySerializer
+from .serializers import *
 import logging as logger
 
 
@@ -72,3 +72,55 @@ class CategoryViewSet(viewsets.ViewSet):
         pass
 
 
+class VendorViewSet(viewsets.ViewSet):
+    def list(self, request):
+        """ Retrieve all categories """
+
+        queryset = Vendor.objects.all()
+        serializer_class = VendorSerializer(queryset, many=True)
+        return Response(serializer_class.data)
+
+    def retrieve(self, request, pk=None):
+        """ Retrieve a vendor by the id """
+
+        item = Vendor.objects.get(pk=pk)
+        serializer_class = VendorSerializer(item, many=False)
+        return Response(serializer_class.data)
+
+    def create(self, request):
+        """ Given the request data, this method create a new vendor """
+
+        if 'name' not in request.data:
+            return Response('Erro inesperado', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        name = request.data['name']
+        vendor = Vendor.objects.create(name=name)
+
+        serialized_vendor = VendorSerializer(vendor, many=False)
+
+        return Response(serialized_vendor.data, status=status.HTTP_201_CREATED)
+
+    def update(self, request, pk=None):
+        """ Given the request data and the id, update the vendor """
+
+        if 'name' not in request.data or pk is None:
+            return Response("Erro inesperado", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        try:
+            item = Vendor.objects.get(pk=request.data['id'])
+        except:
+            return Response('Não há fornecedor disponível', status=status.HTTP_404_NOT_FOUND)
+
+        item.name = request.data['name']
+
+        try:
+            item.save()
+            return Response(VendorSerializer(item, many=False).data, status=status.HTTP_200_OK)
+        except:
+            return Response('Requisição inválida', status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
