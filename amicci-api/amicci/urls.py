@@ -30,7 +30,7 @@ router.register(r'categories', CategoryViewSet, basename='category')
 router.register(r'vendors', VendorViewSet, basename='vendor')
 
 ## Briefing routes
-# router.register(r'briefings', BriefingViewSet, basename='briefing')
+router.register(r'briefings', BriefingViewSet, basename='briefing')
 
 urlpatterns = [
     path('', include(router.urls)),
