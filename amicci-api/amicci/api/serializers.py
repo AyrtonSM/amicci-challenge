@@ -18,3 +18,9 @@ class BriefingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Briefing
         fields = ['id', 'name', 'retailer', 'responsible', 'category', 'release_date', 'availabe']
+
+
+class RetailerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Retailer
+        fields = ['id', 'name', 'vendors']
