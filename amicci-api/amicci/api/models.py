@@ -5,11 +5,10 @@ from django.contrib.postgres.fields import ArrayField
 class Retailer(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=200)
-    vendors = ArrayField(models.AutoField(), blank=True)
+    vendors = ArrayField(models.AutoField(primary_key=True), blank=True)
 
     class Meta:
-        app_label = ''
-        db_table = 'retailer'
+        app_label = 'amicci'
 
 
 class Briefing(models.Model):
@@ -22,16 +21,15 @@ class Briefing(models.Model):
     availabe = models.IntegerField()
 
     class Meta:
-        app_label = ''
-        db_table = 'briefing'
-#
+        app_label = 'amicci'
+
+
 class Vendor(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=200)
 
     class Meta:
-        app_label = ''
-        db_table = 'vendor'
+        app_label = 'amicci'
 
 
 class Category(models.Model):
@@ -39,6 +37,5 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
 
     class Meta:
-        app_label = ''
-        db_table = 'category'
+        app_label = 'amicci'
 
