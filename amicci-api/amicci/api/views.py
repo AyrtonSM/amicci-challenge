@@ -6,6 +6,18 @@ from .serializers import CategorySerializer
 
 class CategoryViewSet(viewsets.ViewSet):
 
+    default_categories = ['Novo Produto', 'Troca de Fornecedor', 'Reformulação de Produto']
+
+    for category in default_categories:
+        try:
+            retrieved_category = Category.objects.get(name=category)
+            if category == retrieved_category.name:
+                continue
+
+        except:
+            Category.objects.create(name=category)
+
+
     def list(self, request):
         queryset = Category.objects.all()
         serializer_class = CategorySerializer(queryset, many=True)
