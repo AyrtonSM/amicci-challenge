@@ -22,7 +22,6 @@ from .api.views import CategoryViewSet
 router = DefaultRouter()
 # Category routes
 router.register(r'categories', CategoryViewSet, basename='category')
-router.register(r'categories/<int:pk>/id/', CategoryViewSet, basename='find_by_id')
 
 ## Retailer routes
 # router.register(r'retailers', RetailerViewSet, basename='retailer')
