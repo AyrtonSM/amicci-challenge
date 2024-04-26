@@ -7,8 +7,14 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name']
 
+
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
         fields = ['id', 'name']
 
+
+class BriefingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Briefing
+        fields = ['id', 'name', 'retailer', 'responsible', 'category', 'release_date', 'availabe']
