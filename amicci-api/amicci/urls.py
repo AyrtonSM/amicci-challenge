@@ -20,7 +20,18 @@ from rest_framework.routers import DefaultRouter
 from .api.views import CategoryViewSet
 
 router = DefaultRouter()
-router.register(r'categories', CategoryViewSet)
+# Category routes
+router.register(r'categories', CategoryViewSet, basename='category')
+router.register(r'categories/<int:pk>/id/', CategoryViewSet, basename='find_by_id')
+
+## Retailer routes
+# router.register(r'retailers', RetailerViewSet, basename='retailer')
+
+## Vendor routes
+# router.register(r'vendors', VendorViewSet, basename='vendor')
+
+## Briefing routes
+# router.register(r'briefings', BriefingViewSet, basename='briefing')
 
 urlpatterns = [
     path('', include(router.urls)),

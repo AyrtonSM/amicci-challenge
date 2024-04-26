@@ -1,34 +1,32 @@
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions, viewsets
 from .models import *
 from .serializers import CategorySerializer
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
 
-    @api_view(['GET', 'POST'])
-    def get_all_categories(request):
-        if request.method == 'POST':
-            return Response({"message": "Got some data!", "data": request.data})
-        return Response({"message": "Hello, world!"})
+class CategoryViewSet(viewsets.ViewSet):
 
-        #     if request.method != 'GET':
-        #         return HttpResponse('Erro inesperado')
-        #
-        #     data = [{
-        #         'id': 1,
-        #         'name': 'Novo Produto',
-        #     },
-        #         {
-        #             'id': 2,
-        #             'name': 'Troca de Fornecedor',
-        #         },
-        #         {
-        #             'id': 3,
-        #             'name': 'Reformulação de Produto',
-        #         }]
-        #
-        #     return JsonResponse({'content-response': data})
+    def list(self, request):
+        queryset = Category.objects.all()
+        serializer_class = CategorySerializer(queryset, many=True)
+        return Response(serializer_class.data)
+
+    def retrieve(self, request, pk=None):
+        item = Category.objects.get(pk=pk)
+        serializer_class = CategorySerializer(item, many=False)
+        return Response(serializer_class.data)
+
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
+
+
+
