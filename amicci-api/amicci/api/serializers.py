@@ -5,22 +5,22 @@ from .models import *
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = '__all__'
 
 
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vendor
-        fields = ['id', 'name']
+        fields = '__all__'
 
 
 class BriefingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Briefing
-        fields = ['id', 'name', 'retailer', 'responsible', 'category', 'release_date', 'availabe']
+        fields = '__all__'
 
 
 class RetailerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Retailer
-        fields = ['id', 'name', 'vendors']
+        fields = '__all__'
