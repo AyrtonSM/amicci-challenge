@@ -23,13 +23,13 @@ router = DefaultRouter()
 # Category routes
 router.register(r'categories', CategoryViewSet, basename='category')
 
-## Retailer routes
-# router.register(r'retailers', RetailerViewSet, basename='retailer')
+# Retailer routes
+router.register(r'retailers', RetailerViewSet, basename='retailer')
 
 # Vendor routes
 router.register(r'vendors', VendorViewSet, basename='vendor')
 
-## Briefing routes
+# Briefing routes
 router.register(r'briefings', BriefingViewSet, basename='briefing')
 
 urlpatterns = [

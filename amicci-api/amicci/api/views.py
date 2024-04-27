@@ -27,43 +27,52 @@ class CategoryViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         """ Retrieve a category by the id """
+        try:
+            if pk is None:
+                return Response('Requisição inválida', status=status.HTTP_400_BAD_REQUEST)
 
-        item = Category.objects.get(pk=pk)
-        serializer_class = CategorySerializer(item, many=False)
-        return Response(serializer_class.data)
+            item = Category.objects.get(pk=pk)
+            serializer_class = CategorySerializer(item, many=False)
+            return Response(serializer_class.data, status=status.HTTP_200_OK)
+
+        except:
+            return Response('Erro inesperado', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def create(self, request):
         """ Given the request data, this method create a new category """
+        try:
+            if 'name' not in request.data:
+                return Response('Erro inesperado', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        if 'name' not in request.data:
+            name = request.data['name']
+            category = Category.objects.create(name=name)
+
+            serialized_category = CategorySerializer(category, many=False)
+
+            return Response(serialized_category.data, status=status.HTTP_201_CREATED)
+
+        except:
             return Response('Erro inesperado', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        name = request.data['name']
-        category = Category.objects.create(name=name)
-
-        serialized_category = CategorySerializer(category, many=False)
-
-        return Response(serialized_category.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk=None):
         """ Given the request data and the id, update the category """
-
-        if 'name' not in request.data or pk is None:
-            return Response("Erro inesperado", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
         try:
-            item = Category.objects.get(pk=request.data['id'])
-        except:
-            logger.warning("The required Category was not found, creating a new resource")
-            return Response('Objeto Categoria inválido.', status=status.HTTP_400_BAD_REQUEST)
+            if 'name' not in request.data or pk is None:
+                return Response("Objeto Categoria inválido.", status=status.HTTP_400_BAD_REQUEST)
 
-        item.name = request.data['name']
+            try:
+                item = Category.objects.get(pk=request.data['id'])
+            except:
+                logger.warning("The required Category was not found, creating a new resource")
+                return Response('Objeto Categoria inválido.', status=status.HTTP_400_BAD_REQUEST)
 
-        try:
+            item.name = request.data['name']
+
             item.save()
             return Response(CategorySerializer(item, many=False).data, status=status.HTTP_200_OK)
+
         except:
-            return Response('Objeto Categoria inválido.', status=status.HTTP_400_BAD_REQUEST)
+            return Response('Erro inesperado', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def destroy(self, request, pk=None):
         pass
@@ -107,7 +116,7 @@ class VendorViewSet(viewsets.ViewSet):
             return Response("Erro inesperado", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         try:
-            item = Vendor.objects.get(pk=request.data['id'])
+            item = Vendor.objects.get(pk=pk)
         except:
             return Response('Não há fornecedor disponível', status=status.HTTP_404_NOT_FOUND)
 
@@ -154,7 +163,8 @@ class BriefingViewSet(viewsets.ViewSet):
         release_date = request.data["release_date"]
         available = request.data["available"]
 
-        briefing = Briefing.objects.create(name=name, retailer=retailer, responsible=responsible, category=category, release_date=release_date, availabe=available)
+        briefing = Briefing.objects.create(name=name, retailer=retailer, responsible=responsible, category=category,
+                                           release_date=release_date, availabe=available)
 
         serialized_briefing = BriefingSerializer(briefing, many=False)
 
@@ -167,7 +177,7 @@ class BriefingViewSet(viewsets.ViewSet):
             return Response("Erro inesperado", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         try:
-            item = Briefing.objects.get(pk=request.data['id'])
+            item = Briefing.objects.get(pk=pk)
         except:
             return Response('Briefing inexistente.', status=status.HTTP_404_NOT_FOUND)
 
@@ -183,6 +193,75 @@ class BriefingViewSet(viewsets.ViewSet):
             return Response(BriefingSerializer(item, many=False).data, status=status.HTTP_200_OK)
         except:
             return Response('Objeto Briefing inválido.', status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+
+class RetailerViewSet(viewsets.ViewSet):
+    def list(self, request):
+        """ Retrieve all retailer """
+
+        queryset = Retailer.objects.all()
+        serializer_class = RetailerSerializer(queryset, many=True)
+        return Response(serializer_class.data)
+
+    def retrieve(self, request, pk=None):
+        """ Retrieve a retailer by the id """
+
+        item = Retailer.objects.get(pk=pk)
+        serializer_class = RetailerSerializer(item, many=False)
+        return Response(serializer_class.data)
+
+    def create(self, request):
+        """ Given the request data, this method create a new retailer """
+
+        retailers = Retailer.objects.all()
+        retailer_main = None
+        for retailer in retailers:
+            if retailer.name == request.data['name']:
+                retailer_main = retailer
+                break
+
+        if retailer_main is None:
+            retailer_main, created = Retailer.objects.get_or_create(name=request.data['name'])
+            if created:
+                retailer_main = Retailer.objects.get(name=request.data['name'])
+
+        for vendor_id in request.data['vendors']:
+            vendor = Vendor.objects.get(pk=vendor_id)
+            retailer_main.vendors.add(vendor)
+
+        retailer_main.save()
+        serialized_retailer = RetailerSerializer(retailer_main, many=False)
+
+        return Response(serialized_retailer.data, status=status.HTTP_201_CREATED)
+
+    def update(self, request, pk=None):
+        """ Given the request data and the id, update the retailer """
+
+        if 'name' not in request.data or pk is None:
+            return Response("Erro inesperado", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        try:
+            item = Retailer.objects.get(pk=pk)
+        except:
+            return Response('Não há fornecedor disponível', status=status.HTTP_404_NOT_FOUND)
+
+        item.name = request.data['name']
+
+        for vendor_id in request.data['vendors']:
+            vendor = Vendor.objects.get(pk=vendor_id)
+            item.vendors.add(vendor)
+
+        try:
+            item.save()
+            return Response(RetailerSerializer(item, many=False).data, status=status.HTTP_200_OK)
+        except:
+            return Response('Requisição inválida', status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         pass
