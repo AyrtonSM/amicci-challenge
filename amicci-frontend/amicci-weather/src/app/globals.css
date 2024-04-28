@@ -1,0 +1,85 @@
+#planetVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.content {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  color: #f1f1f1;
+}
+
+table{
+  padding: 5%;
+}
+
+#location-form{
+  margin:1;
+}
+
+/* Style the button used to pause/play the video */
+button {
+  width: 250px;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  background: #000000;
+  color: #fff;
+  cursor: pointer;
+  border:none;
+  border-radius: 10px;
+}
+
+button:hover {
+  background: #4b4b4b;
+  color: rgb(255, 255, 255);
+  transition: 0.5s;
+}
+
+input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 5px 0;
+  border:none;
+  border-radius: 10px;
+}
+
+#location-form{
+  margin: auto;
+  width: 60%;
+  padding: 1%;
+}
+
+#search-button{
+  float:right;
+}
+
+.clear{
+  clear:both;
+}
+
+table{
+  padding:5%;
+  background:rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+th {
+  background-color: #1e125e;
+  padding:1%;
+  width:1%;
+  
+}
+
+th:hover{
+  transition: 0.7s;
+  background-color: #140c3f;
+  cursor: pointer;
+}
