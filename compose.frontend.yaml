@@ -1,5 +1,8 @@
 services:
   web:
     build: /amicci-frontend/
+    container_name: amicci-frontend
     ports:
-      - '8001:8001'
+      - '3000:3000'
+    stdin_open: true
+    tty: true
