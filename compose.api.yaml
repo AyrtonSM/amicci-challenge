@@ -1,5 +1,6 @@
 services:
   web:
     build: /amicci-api/
+    container_name: amicci-api
     ports:
       - '8000:8000'
