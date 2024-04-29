@@ -34,3 +34,28 @@ Run docker compose <br>
 
 Access api via: <br>
 `$ http://127.0.0.1:8000/` <br>
+
+
+### Production
+There's a production application deployed, you can access it here <br> 
+`http://ec2-44-223-70-169.compute-1.amazonaws.com:8000/briefings/` 
+
+You can use `/briefings` , `/retailers`, `/vendors`, `/categories` <br>
+
+All of them works with POST, GET, PUT verbs. 
+
+`POST -> http://ec2-44-223-70-169.compute-1.amazonaws.com:8000/categories/`
+
+`{ "name": "A brand new Category" }`
+
+Fetches all <br>
+`GET -> http://ec2-44-223-70-169.compute-1.amazonaws.com:8000/categories/`
+
+
+Fetch a specific id <br>
+`GET -> http://ec2-44-223-70-169.compute-1.amazonaws.com:8000/categories/{id_here} ` <br>
+
+Update a specific id <br>
+`PUT -> http://ec2-44-223-70-169.compute-1.amazonaws.com:8000/categories/{id_here}` <br>
+
+`{ "name": "An Updated Category" }`

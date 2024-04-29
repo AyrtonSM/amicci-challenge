@@ -1,7 +1,8 @@
 services:
   web:
-    build: /amicci-frontend/
+    build: ./amicci-frontend/
     container_name: amicci-frontend
+    image: amicci-frontend-image
     ports:
       - '3000:3000'
     stdin_open: true
